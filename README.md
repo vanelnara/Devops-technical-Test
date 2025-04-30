@@ -87,10 +87,41 @@ To remove later:
 ```bash
 terraform destroy
 ```
+---
+
+## 2. Running the CI/CD Workflow (GitHub Actions)
+
+Once you have committed your code and configured your GitHub repository secrets, every push to the `main` branch will automatically trigger the CI/CD pipeline.
+
+This pipeline will:
+1. Authenticate with Google Cloud using your service account.
+2. Build the Docker image from the provided `Dockerfile`.
+3. Push the image to Google Container Registry (GCR).
+4. Deploy the new image to your Cloud Run service.
+
+### ✅ Steps to Trigger CI/CD
+
+```bash
+# Stage all changes
+git add .
+
+# Commit your changes
+git commit -m "Add initial deployment configuration"
+
+# Push to the main branch to trigger deployment
+git push origin main
+```
+
+To monitor the workflow:
+- Go to your repository on GitHub.
+- Click on the **"Actions"** tab.
+- Select the latest workflow run to see logs and status.
 
 ---
 
-### 2. Configuring GitHub Secrets
+---
+
+### 3. Configuring GitHub Secrets
 
 Navigate to `Settings > Secrets > Actions` and add:
 
