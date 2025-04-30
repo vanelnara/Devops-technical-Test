@@ -1,27 +1,29 @@
-# Vanel's DevOps Technical Test Solution - Enhanced Documentation
 
-This repository contains the complete solution for the DevOps technical test, implemented by **Vanel** with production-grade configurations and detailed explanations for beginners.
+No matching results, press enter to execute your custom prompt paraphrase these text
+# Vanel's DevOps Technical Test Solution - Improved Documentation
+
+This project showcases a comprehensive DevOps pipeline for deploying a containerized **PHP** web application (utilizing **Nginx** as a reverse proxy) on **Google Cloud Run**. The application integrates with a Cloud SQL (**MySQL**) database and employs **Cloud Storage** for hosting static files. Infrastructure is controlled through Terraform (Infrastructure-as-Code), while the build and deployment processes are automated with **GitHub Actions** (CI/CD pipeline) and helpful **Bash** scripts.
 
 ---
 
-## 📌 Project Overview
+## 📌 Project Summary
 
-A **PHP web application** deployed on **Google Cloud Run** with:
+A **PHP web application** hosted on **Google Cloud Run**, featuring:
 
 - **Cloud SQL MySQL** database  
-- **Cloud Storage** for static assets  
-- **Automated CI/CD pipeline** via GitHub Actions  
-- **Infrastructure as Code** using **Terraform**
+- **Cloud Storage** for static content  
+- **Automated CI/CD pipeline** using GitHub Actions  
+- **Infrastructure as Code** with **Terraform**
 
 ---
 
-## 📖 Detailed Deployment Guide
+## 📖 Comprehensive Deployment Instructions
 
-### ✅ Prerequisites
+### ✅ Requirements
 
 #### Google Cloud Account:
-- Create account: [https://cloud.google.com](https://cloud.google.com)
-- Enable billing (free tier available)
+- Sign up: [https://cloud.google.com](https://cloud.google.com)
+- Activate billing (free tier available)
 
 #### Install Cloud SDK:
 ```bash
@@ -30,7 +32,7 @@ exec -l $SHELL
 gcloud init
 ```
 
-#### Terraform Installation:
+#### Terraform Setup:
 ```bash
 # Linux installation
 wget https://releases.hashicorp.com/terraform/1.5.0/terraform_1.5.0_linux_amd64.zip
@@ -40,9 +42,9 @@ terraform --version
 ```
 
 #### GitHub Account:
-- Create account: [https://github.com](https://github.com)
+- Sign up: [https://github.com](https://github.com)
 
-#### Set up SSH keys:
+#### Configure SSH keys:
 ```bash
 ssh-keygen -t ed25519 -C "vanel@example.com"
 eval "$(ssh-agent -s)"
@@ -51,21 +53,21 @@ ssh-add ~/.ssh/id_ed25519
 
 ---
 
-## 🚀 Deployment Steps
+## 🚀 Steps for Deployment
 
-### 1. Terraform Setup and Deployment
+### 1. Terraform Configuration and Deployment
 
 ```bash
 # Clone the repository
 git clone https://github.com/vanel/devops-solution.git
 cd devops-solution/infrastructure
 
-# Create and configure terraform.tfvars
+# Set up terraform.tfvars
 cp terraform.tfvars.example terraform.tfvars
 nano terraform.tfvars
 ```
 
-Sample `terraform.tfvars`:
+Example of `terraform.tfvars`:
 ```hcl
 project_id  = "vanel-gcp-project"
 region      = "europe-west3"
@@ -81,16 +83,16 @@ terraform plan
 terraform apply
 ```
 
-To destroy later:
+To remove later:
 ```bash
 terraform destroy
 ```
 
 ---
 
-### 2. GitHub Secrets Configuration
+### 2. Configuring GitHub Secrets
 
-Go to `Settings > Secrets > Actions` and add:
+Navigate to `Settings > Secrets > Actions` and add:
 
 - `VANEL_GCP_PROJECT`  
 - `VANEL_GCP_SA_KEY`
@@ -112,9 +114,9 @@ cat gcp-key.json | base64
 
 ---
 
-## 🔐 Enhanced Security Implementation
+## 🔐 Security Enhancements
 
-### 1. Database Security
+### 1. Database Security Measures
 
 ```bash
 gcloud sql instances patch vanel-mysql-prod   --assign-ip   --no-assign-ip   --network=default
@@ -128,7 +130,7 @@ gcloud sql instances patch vanel-mysql-prod   --backup-start-time=02:00   --enab
 
 ---
 
-### 2. IAM Least Privilege
+### 2. Least Privilege IAM Practices
 
 ```bash
 gcloud iam roles create VanelDevOpsRole   --project=$PROJECT_ID   --title="Vanel DevOps Custom Role"   --description="Custom role with minimum required permissions"   --permissions=cloudsql.instances.connect,cloudsql.instances.get,run.services.create,run.services.update,storage.buckets.create
@@ -138,7 +140,7 @@ gcloud projects add-iam-policy-binding $PROJECT_ID   --member="serviceAccount:va
 
 ---
 
-### 3. Secret Management via Google Secret Manager
+### 3. Secret Management through Google Secret Manager
 
 ```bash
 echo -n "SecurePassword123!" | gcloud secrets create vanel-db-password --data-file=- --replication-policy=automatic
@@ -148,9 +150,9 @@ gcloud secrets add-iam-policy-binding vanel-db-password   --member="serviceAccou
 
 ---
 
-## ⚙️ Production Optimization
+## ⚙️ Production Optimization Strategies
 
-### 1. Resource Sizing
+### 1. Resource Configuration
 
 ```bash
 gcloud run services update vanel-web-app-prod   --region=europe-west3   --cpu=2   --memory=2Gi   --max-instances=5   --concurrency=80   --timeout=300s
@@ -160,21 +162,21 @@ gcloud sql instances patch vanel-mysql-prod   --tier=db-custom-2-4096   --storag
 
 ---
 
-### 2. Monitoring & Alerts
+### 2. Monitoring and Alert Systems
 
-Create `monitoring-policy.json` then:
+Create a `monitoring-policy.json` file, then execute:
 ```bash
 gcloud alpha monitoring policies create --policy-from-file=monitoring-policy.json
 ```
 
 ---
 
-## 📈 Auto-Scaling Configuration
+## 📈 Configuration for Auto-Scaling
 
 ```bash
 gcloud run services update vanel-web-app-prod   --region=europe-west3   --min-instances=1   --max-instances=10   --cpu-throttling   --execution-environment=gen2
 
-gcloud run services update-traffic vanel-web-app-prod   --region=europe-west3   --to-revisions=LATEST=100   --cpu=60
+gcloud run services update-traffic vanel-web-app-prod   --region=europe-west3   --to-revisions=LATEST=100   --
 ```
 
 ---
