@@ -36,8 +36,6 @@ This project showcases a comprehensive DevOps pipeline for deploying a container
 
 ---
 
----
-
 ## 📌 Project Summary
 
 A **PHP web application** hosted on **Google Cloud Run**, featuring:
