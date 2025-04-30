@@ -6,6 +6,38 @@ This project showcases a comprehensive DevOps pipeline for deploying a container
 
 ---
 
+## Repository Structure 
+
+```├── .github/
+│   └── workflows/
+│       └── deploy.yml
+├── infrastructure/
+│   ├── modules/
+│   │   └── cloud_sql/
+│   │       ├── main.tf
+│   │       ├── outputs.tf
+│   │       └── variables.tf
+│   ├── main.tf
+│   ├── outputs.tf
+│   ├── variables.tf
+│   └── terraform.tfvars.example
+├── src/
+│   ├── nginx/
+│   │   └── default.conf
+│   ├── php/
+│   │   └── index.php
+│   └── Dockerfile
+├── scripts/
+│   └── get_cloudrun_ip.sh
+├── README.md
+├── dr.md
+└── extra.md
+```
+
+---
+
+---
+
 ## 📌 Project Summary
 
 A **PHP web application** hosted on **Google Cloud Run**, featuring:
