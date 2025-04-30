@@ -1,0 +1,40 @@
+name: Vanel Web App Deployment
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - 'src/**'
+      - '.github/workflows/deploy.yml'
+      - 'Dockerfile'
+env:
+  PROJECT_ID: ${{ secrets.VANEL_GCP_PROJECT }}
+  GCP_SA_KEY: ${{ secrets.VANEL_GCP_SA_KEY }}
+  REGION: europe-west3
+  SERVICE_NAME: vanel-web-app-prod
+  IMAGE_TAG: ${{ github.sha }}
+jobs:
+  deploy-production:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: Setup GCP Auth
+      uses: google-github-actions/setup-gcloud@v2
+      with:
+        project_id: ${{ env.PROJECT_ID }}
+        service_account_key: ${{ env.GCP_SA_KEY }}
+        export_default_credentials: true
+    - name: Build Docker image
+      run: |
+        docker build -t gcr.io/$PROJECT_ID/$SERVICE_NAME:$IMAGE_TAG           --build-arg ENVIRONMENT=production           --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') .
+    - name: Push to GCR
+      run: |
+        gcloud auth configure-docker
+        docker push gcr.io/$PROJECT_ID/$SERVICE_NAME:$IMAGE_TAG
+    - name: Deploy to Cloud Run
+      run: |
+        gcloud run deploy $SERVICE_NAME           --image gcr.io/$PROJECT_ID/$SERVICE_NAME:$IMAGE_TAG           --platform managed           --region $REGION           --cpu 2           --memory 2Gi           --max-instances 5           --allow-unauthenticated
+    - name: Smoke Test
+      run: |
+        SERVICE_URL=$(gcloud run services describe $SERVICE_NAME           --platform managed --region $REGION           --format 'value(status.url)')
+        curl -s $SERVICE_URL | grep "Vanel's Web Application" || exit 1
