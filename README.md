@@ -1,5 +1,4 @@
 
-No matching results, press enter to execute your custom prompt paraphrase these text
 # Vanel's DevOps Technical Test Solution 
 
 This project showcases a comprehensive DevOps pipeline for deploying a containerized **PHP** web application (utilizing **Nginx** as a reverse proxy) on **Google Cloud Run**. The application integrates with a Cloud SQL (**MySQL**) database and employs **Cloud Storage** for hosting static files. Infrastructure is controlled through Terraform (Infrastructure-as-Code), while the build and deployment processes are automated with **GitHub Actions** (CI/CD pipeline) and helpful **Bash** scripts.
